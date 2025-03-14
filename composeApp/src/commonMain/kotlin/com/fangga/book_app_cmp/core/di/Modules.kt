@@ -4,7 +4,9 @@ import com.fangga.book_app_cmp.book.data.network.KtorRemoteBookDatasource
 import com.fangga.book_app_cmp.book.data.network.RemoteBookDatasource
 import com.fangga.book_app_cmp.book.data.repository.DefaultBookRepository
 import com.fangga.book_app_cmp.book.domain.BookRepository
+import com.fangga.book_app_cmp.book.presentation.book_detail.BookDetailViewModel
 import com.fangga.book_app_cmp.book.presentation.book_list.BookListViewModel
+import com.fangga.book_app_cmp.book.presentation.book_list.SelectedBookViewModel
 import com.fangga.book_app_cmp.core.data.HttpClientFactory
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -22,4 +24,6 @@ val sharedModule = module {
     singleOf(::DefaultBookRepository).bind<BookRepository>()
 
     viewModelOf(::BookListViewModel)
+    viewModelOf(::SelectedBookViewModel)
+    viewModelOf(::BookDetailViewModel)
 }

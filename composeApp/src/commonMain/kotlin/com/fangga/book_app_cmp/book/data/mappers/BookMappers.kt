@@ -4,7 +4,7 @@ import com.fangga.book_app_cmp.book.data.dto.SearchedBookDto
 import com.fangga.book_app_cmp.book.domain.Book
 
 fun SearchedBookDto.toBook() = Book(
-    id = id,
+    id = id.substringAfterLast("/"),
     title = title,
     imageUrl = if (coverKey != null) {
         "https://covers.openlibrary.org/b/olid/${coverKey}-L.jpg"
