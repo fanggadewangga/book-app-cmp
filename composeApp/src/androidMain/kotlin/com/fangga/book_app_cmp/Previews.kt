@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.fangga.book_app_cmp.book.domain.Book
 import com.fangga.book_app_cmp.book.presentation.book_list.BookListScreen
 import com.fangga.book_app_cmp.book.presentation.book_list.BookListState
 import com.fangga.book_app_cmp.book.presentation.book_list.components.BookSearchBar
@@ -29,6 +30,22 @@ private fun BookSearchBarPreview() {
             )
         }
     }
+}
+
+val books = (1..100).map {
+    Book(
+        id = it.toString(),
+        title = "Book $it",
+        imageUrl = it.toString(),
+        authors = listOf("tes"),
+        description = "Description $it",
+        languages = emptyList(),
+        firstPublishedYear = null,
+        averageRating = 4.6789,
+        ratingCount = 5,
+        numPages = it,
+        numEditions = it,
+    )
 }
 
 @Preview

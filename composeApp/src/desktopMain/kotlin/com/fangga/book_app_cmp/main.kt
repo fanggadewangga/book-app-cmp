@@ -1,16 +1,17 @@
 package com.fangga.book_app_cmp
 
-import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.engine.okhttp.OkHttpEngine
+import com.fangga.book_app_cmp.core.di.initKoin
 
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "book-app-cmp",
-    ) {
-        App( engine = remember { OkHttp.create() } )
+fun main() {
+    initKoin()
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "book-app-cmp",
+        ) {
+            App()
+        }
     }
 }
