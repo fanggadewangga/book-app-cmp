@@ -1,4 +1,4 @@
-package com.fangga.book_app_cmp.book.presentation.book_list
+package com.fangga.book_app_cmp.book.presentation
 
 import androidx.lifecycle.ViewModel
 import com.fangga.book_app_cmp.book.domain.Book

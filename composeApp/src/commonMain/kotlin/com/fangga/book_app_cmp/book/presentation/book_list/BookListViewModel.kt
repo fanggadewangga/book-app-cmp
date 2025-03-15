@@ -25,8 +25,9 @@ class BookListViewModel(
     private val bookRepository: BookRepository
 ) : ViewModel() {
 
-    private var cachedBooks: List<Book> = emptyList()
+    private var cachedBooks = emptyList<Book>()
     private var searchJob: Job? = null
+    private var observeFavoriteJob: Job? = null
 
     private val _state = MutableStateFlow(BookListState())
     val state = _state
@@ -34,6 +35,7 @@ class BookListViewModel(
             if (cachedBooks.isEmpty()) {
                 observeSearchQuery()
             }
+            observeFavoriteBooks()
         }
         .stateIn(
             viewModelScope,
@@ -43,14 +45,14 @@ class BookListViewModel(
 
     fun onAction(action: BookListAction) {
         when (action) {
+            is BookListAction.OnBookClick -> {
+
+            }
+
             is BookListAction.OnSearchQueryChange -> {
                 _state.update {
                     it.copy(searchQuery = action.query)
                 }
-            }
-
-            is BookListAction.OnBookClick -> {
-
             }
 
             is BookListAction.OnTabSelected -> {
@@ -61,7 +63,20 @@ class BookListViewModel(
         }
     }
 
-    @OptIn(FlowPreview::class)
+    private fun observeFavoriteBooks() {
+        observeFavoriteJob?.cancel()
+        observeFavoriteJob = bookRepository
+            .getFavoriteBooks()
+            .onEach { favoriteBooks ->
+                _state.update {
+                    it.copy(
+                        favoriteBooks = favoriteBooks
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun observeSearchQuery() {
         state
             .map { it.searchQuery }
@@ -93,7 +108,6 @@ class BookListViewModel(
                 isLoading = true
             )
         }
-
         bookRepository
             .searchBooks(query)
             .onSuccess { searchResults ->
@@ -108,8 +122,8 @@ class BookListViewModel(
             .onError { error ->
                 _state.update {
                     it.copy(
-                        isLoading = false,
                         searchResults = emptyList(),
+                        isLoading = false,
                         errorMessage = error.toUiText()
                     )
                 }

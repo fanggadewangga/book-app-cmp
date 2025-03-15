@@ -37,10 +37,6 @@ kotlin {
         schemaDirectory("$projectDir/schemas")
     }
 
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
-    }
-
     sourceSets {
         val desktopMain by getting
 

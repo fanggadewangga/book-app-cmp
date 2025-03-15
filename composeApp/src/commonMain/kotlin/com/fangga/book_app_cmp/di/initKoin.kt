@@ -1,4 +1,4 @@
-package com.fangga.book_app_cmp.core.di
+package com.fangga.book_app_cmp.di
 
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration

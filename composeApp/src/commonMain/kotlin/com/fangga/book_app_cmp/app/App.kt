@@ -18,7 +18,7 @@ import com.fangga.book_app_cmp.book.presentation.book_detail.BookDetailScreenRoo
 import com.fangga.book_app_cmp.book.presentation.book_detail.BookDetailViewModel
 import com.fangga.book_app_cmp.book.presentation.book_list.BookListScreenRoot
 import com.fangga.book_app_cmp.book.presentation.book_list.BookListViewModel
-import com.fangga.book_app_cmp.book.presentation.book_list.SelectedBookViewModel
+import com.fangga.book_app_cmp.book.presentation.SelectedBookViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 

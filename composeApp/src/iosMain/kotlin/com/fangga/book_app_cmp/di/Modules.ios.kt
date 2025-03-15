@@ -1,4 +1,4 @@
-package com.fangga.book_app_cmp.core.di
+package com.fangga.book_app_cmp.di
 
 import com.fangga.book_app_cmp.book.data.database.DatabaseFactory
 import io.ktor.client.engine.HttpClientEngine

@@ -9,6 +9,8 @@ import com.fangga.book_app_cmp.book.domain.BookRepository
 import com.fangga.book_app_cmp.core.domain.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -16,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class BookDetailViewModel(
     private val bookRepository: BookRepository,
-    private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val bookId = savedStateHandle.toRoute<Route.BookDetail>().id
@@ -25,6 +27,7 @@ class BookDetailViewModel(
     val state = _state
         .onStart {
             fetchBookDescription()
+            observeFavoriteStatus()
         }
         .stateIn(
             viewModelScope,
@@ -34,10 +37,6 @@ class BookDetailViewModel(
 
     fun onAction(action: BookDetailAction) {
         when (action) {
-            BookDetailAction.OnFavoriteClicked -> {
-
-            }
-
             is BookDetailAction.OnSelectedBookChange -> {
                 _state.update {
                     it.copy(
@@ -46,8 +45,33 @@ class BookDetailViewModel(
                 }
             }
 
+            is BookDetailAction.OnFavoriteClicked -> {
+                viewModelScope.launch {
+                    if (state.value.isFavorite) {
+                        bookRepository.deleteFromFavorite(bookId)
+                    } else {
+                        state.value.book?.let { book ->
+                            bookRepository.markAsFavorite(book)
+                        }
+                    }
+                }
+            }
+
             else -> Unit
         }
+    }
+
+    private fun observeFavoriteStatus() {
+        bookRepository
+            .isBookFavorite(bookId)
+            .onEach { isFavorite ->
+                _state.update {
+                    it.copy(
+                        isFavorite = isFavorite
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun fetchBookDescription() {
@@ -57,7 +81,9 @@ class BookDetailViewModel(
                 .onSuccess { description ->
                     _state.update {
                         it.copy(
-                            book = it.book?.copy(description = description),
+                            book = it.book?.copy(
+                                description = description
+                            ),
                             isLoading = false
                         )
                     }
