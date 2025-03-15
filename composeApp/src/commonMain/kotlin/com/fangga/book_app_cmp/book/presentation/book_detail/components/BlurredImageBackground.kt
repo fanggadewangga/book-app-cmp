@@ -46,6 +46,7 @@ import book_app_cmp.composeapp.generated.resources.remove_from_favorite
 import coil3.compose.rememberAsyncImagePainter
 import com.fangga.book_app_cmp.core.presentation.DarkBlue
 import com.fangga.book_app_cmp.core.presentation.DesertWhite
+import com.fangga.book_app_cmp.core.presentation.PulseAnimation
 import com.fangga.book_app_cmp.core.presentation.SandYellow
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -138,7 +139,18 @@ fun BlurredImageBackground(
                     targetState = imageLoadResult
                 ) { result ->
                     when(result) {
-                        null -> CircularProgressIndicator()
+                        null -> {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                PulseAnimation(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                )
+                            }
+                        }
                         else -> {
                             Box {
                                 Image(
